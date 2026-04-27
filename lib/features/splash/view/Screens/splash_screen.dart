@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lab1/core/shared/app_theme.dart';
 import 'package:lab1/features/splash/view/Screens/home_screen.dart';
+import 'package:lab1/features/auth/view/screens/login_screen.dart';
 import 'package:lab1/features/splash/view/widgets/discount_widget.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -184,7 +185,7 @@ class SplashScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const HomeScreen(),
+                              builder: (context) => const LoginScreen(),
                             ),
                           );
                         },
