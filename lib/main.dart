@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lab1/Screens/dashboard_screen.dart';
+import 'package:lab1/features/splash/view/Screens/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: const DashboardScreen(),
+      home: const SplashScreen(),
     );
   }
 }
