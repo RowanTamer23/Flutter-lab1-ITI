@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:lab1/core/shared/app_theme.dart';
-import 'package:lab1/features/splash/view/Screens/checkout_screen.dart';
+import 'package:lab1/features/splash/view/widgets/product.dart';
+import 'package:lab1/core/providers/cart_provider.dart';
+import 'package:lab1/features/cart/view/screens/cart_screen.dart';
 
 class ProductScreen extends StatefulWidget {
-  const ProductScreen({super.key});
+  final Product product;
+  const ProductScreen({super.key, required this.product});
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
@@ -11,7 +15,7 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   int _selectedColor = 0;
-  int _selectedImage = 1;
+  int _selectedImage = 0;
 
   final List<Color> _colors = [
     const Color(0xFF2D3748),
@@ -103,7 +107,14 @@ class _ProductScreenState extends State<ProductScreen> {
         color: AppColors.cardbg,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: const Center(child: Text('🎧', style: TextStyle(fontSize: 140))),
+      child: Center(
+        child: Hero(
+          tag: widget.product.id,
+          child: widget.product.image.startsWith('http')
+              ? Image.network(widget.product.image, fit: BoxFit.contain, height: 200)
+              : Image.asset(widget.product.image, fit: BoxFit.contain, height: 200),
+        ),
+      ),
     );
   }
 
@@ -118,9 +129,7 @@ class _ProductScreenState extends State<ProductScreen> {
           width: _selectedImage == i ? 20 : 8,
           height: 8,
           decoration: BoxDecoration(
-            color: _selectedImage == i
-                ? AppColors.primary
-                : const Color(0xFFE5E7EB),
+            color: _selectedImage == i ? AppColors.primary : const Color(0xFFE5E7EB),
             borderRadius: BorderRadius.circular(4),
           ),
         ),
@@ -129,7 +138,6 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   Widget _buildThumbnails() {
-    final thumbEmojis = ['🎧', '🎧', '📦'];
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
@@ -145,14 +153,14 @@ class _ProductScreenState extends State<ProductScreen> {
               color: AppColors.cardbg,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: _selectedImage == i
-                    ? AppColors.primary
-                    : Colors.transparent,
+                color: _selectedImage == i ? AppColors.primary : Colors.transparent,
                 width: 2,
               ),
             ),
             child: Center(
-              child: Text(thumbEmojis[i], style: const TextStyle(fontSize: 28)),
+              child: widget.product.image.startsWith('http')
+                  ? Image.network(widget.product.image, fit: BoxFit.contain, height: 40)
+                  : Image.asset(widget.product.image, fit: BoxFit.contain, height: 40),
             ),
           ),
         ),
@@ -166,9 +174,9 @@ class _ProductScreenState extends State<ProductScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Sony WH-1000XM5',
-            style: TextStyle(
+          Text(
+            widget.product.name,
+            style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w800,
               color: AppColors.black,
@@ -177,9 +185,9 @@ class _ProductScreenState extends State<ProductScreen> {
           const SizedBox(height: 6),
           Row(
             children: [
-              const Text(
-                '\$ 4,999',
-                style: TextStyle(
+              Text(
+                '\$ ${widget.product.price.toInt()}',
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                   color: AppColors.primary,
@@ -210,9 +218,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         color: _colors[i],
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: _selectedColor == i
-                              ? AppColors.primary
-                              : Colors.transparent,
+                          color: _selectedColor == i ? AppColors.primary : Colors.transparent,
                           width: 2.5,
                         ),
                         boxShadow: [
@@ -259,7 +265,16 @@ class _ProductScreenState extends State<ProductScreen> {
             width: double.infinity,
             height: 52,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Provider.of<CartProvider>(context, listen: false).addItem(widget.product);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('${widget.product.name} added to cart!'),
+                    duration: const Duration(seconds: 1),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.black,
                 foregroundColor: Colors.white,
@@ -280,9 +295,10 @@ class _ProductScreenState extends State<ProductScreen> {
             height: 52,
             child: ElevatedButton(
               onPressed: () {
+                Provider.of<CartProvider>(context, listen: false).addItem(widget.product);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const CheckoutScreen()),
+                  MaterialPageRoute(builder: (_) => const CartScreen()),
                 );
               },
               style: ElevatedButton.styleFrom(

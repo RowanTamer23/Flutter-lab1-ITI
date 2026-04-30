@@ -4,11 +4,13 @@ import 'package:lab1/core/shared/app_theme.dart';
 class SectionHeader extends StatelessWidget {
   final String title;
   final bool showDots;
+  final VoidCallback? onSeeAll;
 
   const SectionHeader({
     super.key,
     required this.title,
     this.showDots = false,
+    this.onSeeAll,
   });
 
   @override
@@ -38,6 +40,18 @@ class SectionHeader extends StatelessWidget {
                     color: i == 0 ? AppColors.primary : const Color(0xFFE5E7EB),
                     borderRadius: BorderRadius.circular(3),
                   ),
+                ),
+              ),
+            ),
+          if (onSeeAll != null)
+            GestureDetector(
+              onTap: onSeeAll,
+              child: Text(
+                'See all',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primary,
                 ),
               ),
             ),

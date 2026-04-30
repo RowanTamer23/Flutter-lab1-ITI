@@ -9,6 +9,8 @@ import 'package:lab1/features/splash/view/widgets/recently_viewed.dart';
 import 'package:lab1/features/splash/view/widgets/search_bar.dart';
 import 'package:lab1/features/splash/view/widgets/section_header.dart';
 
+import 'package:lab1/features/splash/view/Screens/all_products_screen.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -34,7 +36,16 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 20),
             const Categories(),
             const SizedBox(height: 30),
-            const SectionHeader(title: "Hot Sale", showDots: true),
+            SectionHeader(
+              title: "Hot Sale",
+              showDots: true,
+              onSeeAll: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const AllProductsScreen()),
+                );
+              },
+            ),
             const SizedBox(height: 16),
             const HotSalesWidget(),
             const SizedBox(height: 30),
