@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:lab1/core/providers/auth_provider.dart';
+import 'package:lab1/features/auth/view/screens/login_screen.dart';
 import 'package:lab1/core/shared/app_theme.dart';
 import 'package:lab1/features/splash/view/widgets/bottom_nav_bar.dart';
 import 'package:lab1/features/splash/view/widgets/categories.dart';
@@ -23,8 +26,21 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         leadingWidth: 260,
         leading: const SearchBarWidget(),
-        actions: const [
-          NotificationIcon(),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: AppColors.primary),
+            onPressed: () async {
+              await Provider.of<AuthProvider>(context, listen: false).logout();
+              if (context.mounted) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  (route) => false,
+                );
+              }
+            },
+          ),
+          const NotificationIcon(),
         ],
       ),
       body: SingleChildScrollView(

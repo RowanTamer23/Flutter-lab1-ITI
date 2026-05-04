@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:lab1/features/splash/view/Screens/home_screen.dart';
+import 'package:lab1/core/providers/auth_provider.dart';
 import '../../../../core/shared/app_theme.dart';
 import '../widgets/custom_text_field.dart';
 import 'signup_screen.dart';
@@ -17,6 +19,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -50,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 48),
                   CustomTextField(
+                    controller: authProvider.loginEmail,
                     hintText: 'Email Address',
                     prefixIcon: Icons.email_outlined,
                     validator: (value) {
@@ -66,6 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 20),
                   CustomTextField(
+                    controller: authProvider.loginPassword,
                     hintText: 'Password',
                     prefixIcon: Icons.lock_outline_rounded,
                     isPassword: !_isPasswordVisible,
@@ -106,17 +112,31 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const HomeScreen(),
-                            ),
-                            (route) => false,
-                          );
-                        }
-                      },
+                      onPressed: authProvider.isLoading
+                          ? null
+                          : () async {
+                              if (_formKey.currentState!.validate()) {
+                                final error = await authProvider.login();
+                                if (!context.mounted) return;
+
+                                if (error == null) {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const HomeScreen(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Login Error: $error'),
+                                      backgroundColor: Colors.redAccent,
+                                    ),
+                                  );
+                                }
+                              }
+                            },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.white,
                         foregroundColor: AppColors.primary,
@@ -125,13 +145,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         elevation: 0,
                       ),
-                      child: Text(
-                        'LOGIN',
-                        style: AppTextStyles.title.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primary,
-                        ),
-                      ),
+                      child: authProvider.isLoading
+                          ? const CircularProgressIndicator(
+                              color: AppColors.primary,
+                            )
+                          : Text(
+                              'LOGIN',
+                              style: AppTextStyles.title.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primary,
+                              ),
+                            ),
                     ),
                   ),
                   const SizedBox(height: 24),

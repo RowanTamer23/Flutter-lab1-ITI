@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:lab1/features/splash/view/Screens/home_screen.dart';
+import 'package:lab1/core/providers/auth_provider.dart';
 import '../../../../core/shared/app_theme.dart';
 import '../widgets/custom_text_field.dart';
 import 'login_screen.dart';
@@ -17,6 +19,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -28,7 +32,7 @@ class _SignupScreenState extends State<SignupScreen> {
             colors: [
               AppColors.bg1,
               AppColors.bg2,
-            ], // Reversed gradient for visual distinction
+            ],
           ),
         ),
         child: SafeArea(
@@ -61,6 +65,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   const SizedBox(height: 48),
                   CustomTextField(
+                    controller: authProvider.signUpName,
                     hintText: 'Full Name',
                     prefixIcon: Icons.person_outline_rounded,
                     validator: (value) {
@@ -72,6 +77,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   const SizedBox(height: 20),
                   CustomTextField(
+                    controller: authProvider.signUpEmail,
                     hintText: 'Email Address',
                     prefixIcon: Icons.email_outlined,
                     validator: (value) {
@@ -88,6 +94,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   const SizedBox(height: 20),
                   CustomTextField(
+                    controller: authProvider.signUpPassword,
                     hintText: 'Password',
                     prefixIcon: Icons.lock_outline_rounded,
                     isPassword: !_isPasswordVisible,
@@ -109,22 +116,52 @@ class _SignupScreenState extends State<SignupScreen> {
                       return null;
                     },
                   ),
+                  const SizedBox(height: 20),
+                  CustomTextField(
+                    controller: authProvider.confirmPassword,
+                    hintText: 'Confirm Password',
+                    prefixIcon: Icons.lock_outline_rounded,
+                    isPassword: !_isPasswordVisible,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please confirm your password';
+                      }
+                      if (value != authProvider.signUpPassword.text) {
+                        return 'Passwords do not match';
+                      }
+                      return null;
+                    },
+                  ),
                   const SizedBox(height: 40),
                   SizedBox(
                     width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const HomeScreen(),
-                            ),
-                            (route) => false,
-                          );
-                        }
-                      },
+                      onPressed: authProvider.isLoading
+                          ? null
+                          : () async {
+                              if (_formKey.currentState!.validate()) {
+                                final error = await authProvider.signUp();
+                                if (!context.mounted) return;
+
+                                if (error == null) {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const HomeScreen(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Signup Error: $error'),
+                                      backgroundColor: Colors.redAccent,
+                                    ),
+                                  );
+                                }
+                              }
+                            },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.white,
                         foregroundColor: AppColors.primary,
@@ -133,13 +170,17 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         elevation: 0,
                       ),
-                      child: Text(
-                        'SIGN UP',
-                        style: AppTextStyles.title.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primary,
-                        ),
-                      ),
+                      child: authProvider.isLoading
+                          ? const CircularProgressIndicator(
+                              color: AppColors.primary,
+                            )
+                          : Text(
+                              'SIGN UP',
+                              style: AppTextStyles.title.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primary,
+                              ),
+                            ),
                     ),
                   ),
                   const SizedBox(height: 24),
