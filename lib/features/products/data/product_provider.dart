@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import '../../features/splash/view/widgets/product.dart';
+import '../view/widgets/product.dart';
 
 class ProductProvider with ChangeNotifier {
   List<Product> _products = [];

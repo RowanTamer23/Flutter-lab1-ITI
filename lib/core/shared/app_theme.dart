@@ -14,19 +14,16 @@ class AppTextStyles {
   static final TextStyle title = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.bold,
-    fontFamily: "PPMori",
     color: Colors.white,
   );
   static final TextStyle subtitle = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w500,
-    fontFamily: "PPMori",
     color: Colors.white,
   );
   static final TextStyle body = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    fontFamily: "PPMori",
     color: Colors.white,
   );
 }

@@ -1,11 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:lab1/core/shared/app_theme.dart';
-import 'package:lab1/features/splash/view/Screens/home_screen.dart';
 import 'package:lab1/features/auth/view/screens/login_screen.dart';
-import 'package:lab1/features/splash/view/widgets/discount_widget.dart';
+import 'package:lab1/features/home/view/widgets/discount_widget.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 5), () {
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -179,34 +196,42 @@ class SplashScreen extends StatelessWidget {
                           letterSpacing: -0.2,
                         ),
                       ),
-                      SizedBox(height: 30),
+                      // SizedBox(height: 30),
+
+                      // TextButton(
+                      //   onPressed: () {
+                      //     Navigator.pushReplacement(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => const LoginScreen(),
+                      //       ),
+                      //     );
+                      //   },
+                      //   style: TextButton.styleFrom(
+                      //     padding: EdgeInsets.symmetric(horizontal: 130),
+                      //     backgroundColor: AppColors.white,
+                      //     shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(50),
+                      //     ),
+                      //   ),
+                      //   child: Text(
+                      //     "LOG IN",
+                      //     style: AppTextStyles.title.copyWith(
+                      //       color: AppColors.primary,
+                      //       fontSize: 18,
+                      //     ),
+                      //   ),
+                      // ),
+                      SizedBox(height: 10),
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const LoginScreen(),
                             ),
                           );
                         },
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.symmetric(horizontal: 130),
-                          backgroundColor: AppColors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
-                        child: Text(
-                          "LOG IN",
-                          style: AppTextStyles.title.copyWith(
-                            color: AppColors.primary,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      TextButton(
-                        onPressed: () {},
                         child: Text(
                           "SKIP",
                           style: AppTextStyles.title.copyWith(fontSize: 16),

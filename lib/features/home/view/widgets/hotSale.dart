@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lab1/core/shared/app_theme.dart';
-import 'package:lab1/features/splash/view/Screens/product_screen.dart';
-import 'package:lab1/features/splash/view/widgets/product_card.dart';
-import 'package:lab1/core/providers/product_provider.dart';
+import 'package:lab1/features/products/view/screens/product_screen.dart';
+import 'package:lab1/features/products/view/widgets/product_card.dart';
+import 'package:lab1/features/products/data/product_provider.dart';
 
 class HotSalesWidget extends StatefulWidget {
   const HotSalesWidget({super.key});

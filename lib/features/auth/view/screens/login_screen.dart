@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lab1/features/splash/view/Screens/home_screen.dart';
-import 'package:lab1/core/providers/auth_provider.dart';
+import 'package:lab1/features/home/view/Screens/home_screen.dart';
+import 'package:lab1/features/auth/data/auth_provider.dart';
 import '../../../../core/shared/app_theme.dart';
 import '../widgets/custom_text_field.dart';
 import 'signup_screen.dart';

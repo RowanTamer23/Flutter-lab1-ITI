@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lab1/core/providers/auth_provider.dart';
+import 'package:lab1/features/auth/data/auth_provider.dart';
 import 'package:lab1/features/auth/view/screens/login_screen.dart';
 import 'package:lab1/core/shared/app_theme.dart';
-import 'package:lab1/features/splash/view/widgets/bottom_nav_bar.dart';
-import 'package:lab1/features/splash/view/widgets/categories.dart';
-import 'package:lab1/features/splash/view/widgets/home_banner.dart';
-import 'package:lab1/features/splash/view/widgets/hotSale.dart';
-import 'package:lab1/features/splash/view/widgets/notification_icon.dart';
-import 'package:lab1/features/splash/view/widgets/recently_viewed.dart';
-import 'package:lab1/features/splash/view/widgets/search_bar.dart';
-import 'package:lab1/features/splash/view/widgets/section_header.dart';
+import 'package:lab1/core/shared/bottom_nav_bar.dart';
+import 'package:lab1/features/home/view/widgets/categories.dart';
+import 'package:lab1/features/home/view/widgets/home_banner.dart';
+import 'package:lab1/features/home/view/widgets/hotSale.dart';
+import 'package:lab1/features/home/view/widgets/notification_icon.dart';
+import 'package:lab1/features/home/view/widgets/recently_viewed.dart';
+import 'package:lab1/features/home/view/widgets/search_bar.dart';
+import 'package:lab1/features/home/view/widgets/section_header.dart';
 
-import 'package:lab1/features/splash/view/Screens/all_products_screen.dart';
+import 'package:lab1/features/products/view/screens/all_products_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lab1/features/splash/view/Screens/home_screen.dart';
-import 'package:lab1/core/providers/auth_provider.dart';
+import 'package:lab1/features/home/view/Screens/home_screen.dart';
+import 'package:lab1/features/auth/data/auth_provider.dart';
 import '../../../../core/shared/app_theme.dart';
 import '../widgets/custom_text_field.dart';
 import 'login_screen.dart';
@@ -15,6 +15,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -29,10 +30,7 @@ class _SignupScreenState extends State<SignupScreen> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              AppColors.bg1,
-              AppColors.bg2,
-            ],
+            colors: [AppColors.bg1, AppColors.bg2],
           ),
         ),
         child: SafeArea(
@@ -97,7 +95,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     controller: authProvider.signUpPassword,
                     hintText: 'Password',
                     prefixIcon: Icons.lock_outline_rounded,
-                    isPassword: !_isPasswordVisible,
+                    isPassword: _isPasswordVisible,
                     suffixIcon: _isPasswordVisible
                         ? Icons.visibility_off_outlined
                         : Icons.visibility_outlined,
@@ -121,7 +119,15 @@ class _SignupScreenState extends State<SignupScreen> {
                     controller: authProvider.confirmPassword,
                     hintText: 'Confirm Password',
                     prefixIcon: Icons.lock_outline_rounded,
-                    isPassword: !_isPasswordVisible,
+                    isPassword: _isConfirmPasswordVisible,
+                    suffixIcon: _isConfirmPasswordVisible
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined,
+                    onSuffixPressed: () {
+                      setState(() {
+                        _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                      });
+                    },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please confirm your password';

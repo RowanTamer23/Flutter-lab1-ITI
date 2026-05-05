@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import '../../features/splash/view/widgets/product.dart';
+import '../../products/view/widgets/product.dart';
 
 class CartItem {
   final Product product;

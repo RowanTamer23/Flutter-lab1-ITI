@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:lab1/core/shared/app_theme.dart';
 import 'package:lab1/features/cart/view/screens/cart_screen.dart';
-import 'package:lab1/core/providers/cart_provider.dart';
+import 'package:lab1/features/cart/data/cart_provider.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   const CustomBottomNavBar({super.key});

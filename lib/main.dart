@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lab1/features/splash/view/Screens/splash_screen.dart';
-import 'package:lab1/core/providers/cart_provider.dart';
-import 'package:lab1/core/providers/product_provider.dart';
-import 'package:lab1/core/providers/auth_provider.dart';
+import 'package:lab1/features/home/view/Screens/splash_screen.dart';
+import 'package:lab1/features/cart/data/cart_provider.dart';
+import 'package:lab1/features/products/data/product_provider.dart';
+import 'package:lab1/features/auth/data/auth_provider.dart';
 import 'package:lab1/firebase_options.dart';
 
 void main() async {
